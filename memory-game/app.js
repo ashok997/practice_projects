@@ -1,5 +1,4 @@
 document.addEventListener("DOMContentLoaded", () => {
-  //card options
   const cardArray = [
     {
       name: "fries",
@@ -59,7 +58,6 @@ document.addEventListener("DOMContentLoaded", () => {
   var cardsChosenId = [];
   const cardsWon = [];
 
-  //create your board
   function createBoard() {
     for (let i = 0; i < cardArray.length; i++) {
       var card = document.createElement("img");
@@ -70,7 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //check for matches
   function checkForMatch() {
     var cards = document.querySelectorAll("img");
     const optionOneId = cardsChosenId[0];
@@ -93,7 +90,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
-  //flip your card
   function flipCard() {
     var cardId = this.getAttribute("data-id");
     cardsChosen.push(cardArray[cardId].name);
