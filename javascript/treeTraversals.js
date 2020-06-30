@@ -50,3 +50,20 @@ function dfs(root) {
 }
 
 //console.log(dfs(tree));
+
+//BFS
+function bfs(root) {
+  let queue = [];
+  let returnList = []; //output
+
+  queue.push(root);
+  while (queue.length) {
+    let checked = queue.shift();
+    returnList.push(checked.val);
+    checked.left && queue.push(checked.left);
+    checked.right && queue.push(checked.right);
+  }
+  return returnList;
+}
+
+//console.log(bfs(tree))
