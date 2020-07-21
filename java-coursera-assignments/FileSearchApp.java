@@ -5,6 +5,9 @@
 package com.example.filesearch;
 
 import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 public class FileSearchApp {
 	
@@ -28,7 +31,7 @@ public class FileSearchApp {
 			app.setPath(args[0]);
 		}
 		try {
-		app.walkDirectory(app.getPath());
+			app.walkDirectory(app.getPath());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -36,11 +39,14 @@ public class FileSearchApp {
 	}
 
 
-	private void walkDirectory(String path) {
-		System.out.println("walkDirectory:" + path);
-		searchFile(null);
-		addFileToZip(null);
+	private void walkDirectory(String path) throws IOException {
+		Files.walk(Paths.get(path))
+			.forEach(f -> processFile(f.toFile()));
 		
+	}
+	
+	public void processFile(File file) {
+		System.out.println("processFile: " + file);
 	}
 
 
