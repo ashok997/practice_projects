@@ -6,14 +6,19 @@ package com.example.filesearch;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.UncheckedIOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.regex.Pattern;
+
 
 public class FileSearchApp {
 	
 	String path;
 	String regex;
 	String zipFileName;
+	Pattern pattern;
 	
 
 	public static void main(String[] args) {
@@ -46,21 +51,37 @@ public class FileSearchApp {
 	}
 	
 	public void processFile(File file) {
-		System.out.println("processFile: " + file);
+		
+			try {
+				if(searchFile(file)){
+					addFileToZip(file);
+				}
+			} catch (IOException|UncheckedIOException e) {
+				
+				System.out.println("Error processing file:" + file + ": " + e);
+			} 
 	}
 
 
-	private void addFileToZip(File file) {
-		// TODO Auto-generated method stub
-		System.out.println("searchFile: " + file);
+	private boolean addFileToZip(File file) {
+		
+		return false;
 		
 	}
 
 
-	private void searchFile(File file) {
-		// TODO Auto-ge	nerated method stub
-		System.out.println("addFiletoZip: " + file);
+	private boolean searchFile(File file) throws IOException{
 		
+		return Files.lines(file.toPath(), StandardCharsets.UTF_8)
+				.anyMatch(t-> searchText(t));
+		
+	}
+
+
+	private boolean searchText(String text) {
+//		return (this.getRegex() == null)? true :
+//			this.pattern.matcher(text).matches();
+		return true;
 	}
 
 
@@ -81,6 +102,7 @@ public class FileSearchApp {
 
 	public void setRegex(String regex) {
 		this.regex = regex;
+		this.pattern = Pattern.compile(regex);
 	}
 
 
