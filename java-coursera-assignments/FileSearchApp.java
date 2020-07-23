@@ -5,12 +5,17 @@
 package com.example.filesearch;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Pattern;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 
 
 public class FileSearchApp {
@@ -19,6 +24,7 @@ public class FileSearchApp {
 	String regex;
 	String zipFileName;
 	Pattern pattern;
+	List <File> zipFiles = new ArrayList<File>();
 	
 
 	public static void main(String[] args) {
@@ -47,6 +53,7 @@ public class FileSearchApp {
 	private void walkDirectory(String path) throws IOException {
 		Files.walk(Paths.get(path))
 			.forEach(f -> processFile(f.toFile()));
+		zipFiles();
 		
 	}
 	
@@ -63,9 +70,10 @@ public class FileSearchApp {
 	}
 
 
-	private boolean addFileToZip(File file) {
-		
-		return false;
+	private void addFileToZip(File file) {
+		if (getZipFileName() != null) {
+			zipFiles.add(file);
+		}
 		
 	}
 
@@ -79,9 +87,39 @@ public class FileSearchApp {
 
 
 	private boolean searchText(String text) {
-//		return (this.getRegex() == null)? true :
-//			this.pattern.matcher(text).matches();
-		return true;
+		return (this.getRegex() == null)? true :
+			this.pattern.matcher(text).matches();
+	
+	}
+	
+	public void zipFiles() throws IOException {
+		try (ZipOutputStream out = 
+				new ZipOutputStream(new FileOutputStream(getZipFileName()))){
+			File baseDir = new File(getPath());
+			
+			for (File file : zipFiles) {
+				String fileName = getRelativeFilename(file, baseDir);
+				ZipEntry zipEntry = new ZipEntry(fileName);
+				zipEntry.setTime(file.lastModified());
+				out.putNextEntry(zipEntry);
+				
+				Files.copy(file.toPath(), out);
+				out.closeEntry();
+			}
+		}
+	}
+
+
+	public String getRelativeFilename(File file, File baseDir) {
+		String fileName = file.getAbsolutePath().substring(
+				baseDir.getAbsolutePath().length());
+		
+		fileName = fileName.replace('\\', '/');
+		
+		while(fileName.startsWith("/")) {
+			fileName = fileName.substring(1);
+		}
+		return fileName;
 	}
 
 
