@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <beans xmlns="http://www.springframework.org/schema/beans"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:schemaLocation="
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <!-- bean definitions here -->
-    <bean id="person" 
-    	class="com.maven.spring.test.testApp.Person">
-    </bean>
+	<!-- bean definitions here -->
+	<bean id="person" class="com.maven.spring.test.testApp.Person">
+		<constructor-arg value="007" name="id" type="int"></constructor-arg>
+		<constructor-arg value="James" name="name"
+			type="String"></constructor-arg>
+		<property name="taxId" value="123"></property>
+		<property name="address" ref="address"></property>
+	</bean>
+
+	<bean id="address" class="com.maven.spring.test.testApp.Address">
+		<constructor-arg name="street" value="200 Park Avenue"></constructor-arg>
+		<constructor-arg name="postcode" value="10011"></constructor-arg>
+	</bean>
 </beans>
