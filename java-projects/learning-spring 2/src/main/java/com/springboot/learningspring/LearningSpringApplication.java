@@ -9,7 +9,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.springboot.learningspring.data.entity.Room;
 import com.springboot.learningspring.data.repository.RoomRepository;
-
+import com.springboot.learningspring.data.entity.Guest;
+import com.springboot.learningspring.data.repository.GuestRepository;
 @SpringBootApplication
 public class LearningSpringApplication {
 
@@ -28,5 +29,16 @@ public class LearningSpringApplication {
 			return this.roomRepository.findAll();
 		}
 	}
-
+	
+	@RestController
+	@RequestMapping("/guests")
+	public class GuestController{
+		@Autowired
+		private GuestRepository guestRepository;
+		
+		@GetMapping
+		public Iterable<Guest> getGuests(){
+			return this.guestRepository.findAll();
+		}
+	}
 }
