@@ -18,9 +18,9 @@ public class Reservation {
 			@GeneratedValue(strategy =GenerationType.AUTO)
 			private long reservationId;
 			@Column(name ="ROOM_ID")
-			private int roomId;
+			private long roomId;
 			@Column(name ="GUEST_ID")
-			private int guestId;
+			private long guestId;
 			@Column(name ="RES_DATE")
 			private Date date;
 			
@@ -30,16 +30,16 @@ public class Reservation {
 			public void setReservationId(long reservationId) {
 				this.reservationId = reservationId;
 			}
-			public int getRoomId() {
+			public long getRoomId() {
 				return roomId;
 			}
-			public void setRoomId(int roomId) {
+			public void setRoomId(long roomId) {
 				this.roomId = roomId;
 			}
-			public int getGuestId() {
+			public long getGuestId() {
 				return guestId;
 			}
-			public void setGuestId(int guestId) {
+			public void setGuestId(long guestId) {
 				this.guestId = guestId;
 			}
 			public Date getDate() {

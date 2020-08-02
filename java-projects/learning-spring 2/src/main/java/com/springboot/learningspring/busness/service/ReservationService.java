@@ -1,5 +1,6 @@
 package com.springboot.learningspring.busness.service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.springboot.learningspring.business.domain.RoomReservation;
+import com.springboot.learningspring.data.entity.Guest;
 import com.springboot.learningspring.data.entity.Reservation;
 import com.springboot.learningspring.data.entity.Room;
 import com.springboot.learningspring.data.repository.GuestRepository;
@@ -45,9 +47,21 @@ public class ReservationService {
 		});
 		
 		Iterable<Reservation> reservations = this.reservationRepository.findReservationByReservationDate(new java.sql.Date(date.getTime()));
+		reservations.forEach(reservation -> {
+			RoomReservation roomReservation = roomReservationMap.get(reservation.getRoomId());
+			roomReservation.setDate(date);
+			Guest guest = this.guestRepository.findById(reservation.getGuestId()).get();
+			roomReservation.setFirstName(guest.getFirstName());
+			roomReservation.setLastName(guest.getLastName());
+			roomReservation.setGuestId(guest.getGuestID());
+		});
 		
+		List<RoomReservation> roomReservations = new ArrayList<>();
+		for (Long id: roomReservationMap.keySet()) {
+			roomReservations.add(roomReservationMap.get(id));
+		}
 	
-		return null;
+		return roomReservations;
 		
 	}
 	
